@@ -7,24 +7,30 @@ const { rideMatchingIngress, driverTrackingIngress, pricingService } = require('
 
 router
   // forwards pricing requests to Pricing, then forwards the Pricing response back to the client. 
-  .post('/pricing', (ctx) => {
-    console.log('pricing hit')
-    axios.post(pricingService.url, ctx.request.body)
+  .get('/pricing:id', (ctx) => {
+    axios.post(pricingService.url, ctx.params.id)
       .then(({ body }) => {
-        ctx.response.body(body);
+        ctx.response.body = body;
+        ctx.response.status = 200;
       })
   })
   
   // forwards requests to the Ride Matching queue
   .post('/ridematching', (ctx) => {
-    console.log('ridematching hit')
-    helper.sendToQueue(rideMatchingIngressSQS, rideMatchingIngress.url, ctx.request.body, ctx)
+    helper.sendToQueue(rideMatchingIngressSQS, rideMatchingIngress.url, ctx.request.body);
+    ctx.response.status = 200;
   })
 
-  // forwards requests to the Drive Tracking queue
+  // forwards driver location update requests to the Driver Tracking queue
   .post('/drivertracking', (ctx) => {
-    console.log('drivertracking hit')
-    helper.sendToQueue(driverTrackingIngressSQS, driverTrackingIngress, ctx.request.body, ctx);
+    helper.sendToQueue(driverTrackingIngressSQS, driverTrackingIngress.url, ctx.request.body);
+    ctx.response.status = 200;
+  })
+
+  // forwards driver sign-off requests to the Driver Tracking queue
+  .del('/drivertracking:id', (ctx) => {
+    helper.sendToQueue(driverTrackingIngressSQS, driverTrackingIngress.url, ctx.params.id);
+    ctx.response.status = 200;
   })
 
 module.exports = router;
