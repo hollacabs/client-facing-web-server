@@ -1,0 +1,26 @@
+{
+  "name": "client-facing-web-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hollacabs/client-facing-web-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hollacabs/client-facing-web-server/issues"
+  },
+  "homepage": "https://github.com/hollacabs/client-facing-web-server#readme",
+  "dependencies": {
+    "aws-sdk": "^2.191.0",
+    "axios": "^0.17.1",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0"
+  }
+}
