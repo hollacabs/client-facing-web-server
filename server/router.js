@@ -3,11 +3,12 @@ const router = new Router();
 const axios = require('axios');
 const helper = require('./helper');
 const { rideMatchingIngressSQS, driverTrackingIngressSQS } = require('./sqs');
-const { rideMatchingIngress, driverTrackingIngress, pricingService } = require('../config');
+const { rideMatchingIngress, driverTrackingIngress, pricingService } = require('./config');
 
 router
   // forwards pricing requests to Pricing, then forwards the Pricing response back to the client. 
   .post('/pricing', (ctx) => {
+    console.log('pricing hit')
     axios.post(pricingService.url, ctx.request.body)
       .then(({ body }) => {
         ctx.response.body(body);
@@ -16,11 +17,13 @@ router
   
   // forwards requests to the Ride Matching queue
   .post('/ridematching', (ctx) => {
+    console.log('ridematching hit')
     helper.sendToQueue(rideMatchingIngressSQS, rideMatchingIngress.url, ctx.request.body, ctx)
   })
 
   // forwards requests to the Drive Tracking queue
   .post('/drivertracking', (ctx) => {
+    console.log('drivertracking hit')
     helper.sendToQueue(driverTrackingIngressSQS, driverTrackingIngress, ctx.request.body, ctx);
   })
 

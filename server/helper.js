@@ -7,7 +7,7 @@ module.exports = {
     queueSQS.sendMessage(params, (err, data) => {
       if (err) console.log(err);
       else {
-        ctx.send(200);
+        ctx.status(200);
       }
     });
   }

@@ -1,5 +1,5 @@
 const AWS = require('aws-sdk');
-const { rideMatchingIngress, driverTrackingIgress } = require('../config');
+const { rideMatchingIngress, driverTrackingIngress } = require('./config');
 
 module.exports = {
   rideMatchingIngressSQS : new AWS.SQS({
@@ -10,7 +10,7 @@ module.exports = {
 
   driverTrackingIgressSQS: new AWS.SQS({
     apiVersion: '2012-11-05',
-    region: rideMatchingEgress.region,
+    region: driverTrackingIngress.region,
     credentials: new AWS.Credentials(driverTrackingIngress.accessKeyId, driverTrackingIngress.secretAccessKey)
   })
 }
